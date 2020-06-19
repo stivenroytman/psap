@@ -53,7 +53,7 @@ end_message_fontsize = 32
 end_message_x = 190
 end_message_y = 290
 # parameters: AI opponent
-opponent_image_print = True
+opponent_image_print = False
 opponent_image_name = 'default_opponent'
 opponent_image_x = 550
 opponent_image_y = 300

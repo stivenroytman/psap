@@ -12,7 +12,7 @@ from psap_parameters import *
 """Initialize pygame modules"""
 pygame.init()
 
-def psap(participant_name, opponent_image_name):
+def psap(participant_name, opponent_image_name_list):
     """Initialize the game screen"""
     screen = pygame.display.set_mode((screen_width, screen_height))
     pygame.display.set_caption(screen_name)
@@ -37,7 +37,6 @@ def psap(participant_name, opponent_image_name):
     screen_opponent_points = FlashingObject(opponent.points, opponent_points_fontsize, opponent_points_x, opponent_points_y,
                                             screen)
 
-    opponent_image = pygame.image.load(opponent_image_name)
     """Initialize Player variables"""
     participant = Player()
     screen_player_name = ObjectPrint(participant_name, participant_name_fontsize, participant_name_x, participant_name_y,
@@ -61,7 +60,7 @@ def psap(participant_name, opponent_image_name):
 
     def game_screen_display(tic, screen_player_points, screen_opponent_points, opponent, participant,
                             screen_counter, screen_choice_1, screen_choice_2, screen_choice_3,
-                            screen_opponent_name, screen_player_name, choice_list):
+                            screen_opponent_name, screen_player_name, choice_list, opponent_image_print):
         if participant_earned_animation:
             screen_player_points.begin_flashing(participant.earned_point_animation_timer, 'pos')
         if participant_provoked_animation:
@@ -222,12 +221,12 @@ def psap(participant_name, opponent_image_name):
 
             game_screen_display(tic, screen_player_points, screen_opponent_points, opponent, participant,
                                 screen_counter, screen_choice_1, screen_choice_2, screen_choice_3,
-                                practice, screen_player_name, choice_list)
+                                practice, screen_player_name, choice_list, opponent_image_print=False)
 
             pygame.display.update()
             continue
         # ----------------------------------------------------------------------------------------------------------------------
-        if phase % 2 == 0:  # PHASE: transition
+        if phase % 2 == 0:  # PHASE: transitionnn
             if phase > 2:
                 data[str((int(phase / 2) - 1))]['player_points'] = participant.points
                 data[str((int(phase / 2) - 1))]['total_presses'] = participant.counters_data_output
@@ -248,6 +247,7 @@ def psap(participant_name, opponent_image_name):
                 continue
 
         else:  # PHASE: block
+            opponent_image = pygame.image.load(opponent_image_name_list[int((phase-1)/2)])
             phase_timer -= tic
             if phase_timer <= 0: phase += 1
             if safe_period > 0:
@@ -315,7 +315,7 @@ def psap(participant_name, opponent_image_name):
                          block_height)
             game_screen_display(tic, screen_player_points, screen_opponent_points, opponent, participant,
                                 screen_counter, screen_choice_1, screen_choice_2, screen_choice_3,
-                                screen_opponent_name, screen_player_name, choice_list)
+                                screen_opponent_name, screen_player_name, choice_list, opponent_image_print=True)
 
             pygame.display.update()
             continue
