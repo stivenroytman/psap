@@ -12,6 +12,9 @@ from psap_parameters import *
 """Initialize pygame modules"""
 pygame.init()
 
+pname = input('Participant name: ')
+opp_image_list = ['not 0 ;)', 'opp1.jpg', 'opp2.png', 'opp3.jpg']
+
 def psap(participant_name, opponent_image_name_list):
     """Initialize the game screen"""
     screen = pygame.display.set_mode((screen_width, screen_height))
@@ -319,3 +322,5 @@ def psap(participant_name, opponent_image_name_list):
 
             pygame.display.update()
             continue
+
+psap(pname, opp_image_list)
