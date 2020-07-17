@@ -2,6 +2,8 @@ import datetime
 import pygame
 import numpy as np
 import pickle
+import sys
+import os
 from ai_class import AI
 from player_class import Player
 from object_print_class import ObjectPrint
@@ -11,6 +13,11 @@ from psap_parameters import *
 
 """Initialize pygame modules"""
 pygame.init()
+pname = sys.argv[1]
+opp_image_list = os.listdir(sys.argv[2])
+opp_image_list = [sys.argv[2] + '\\' + image for image in opp_image_list]
+opp_image_list = ['not 0 ;)'] + opp_image_list
+
 
 def psap(participant_name, opponent_image_name_list):
     """Initialize the game screen"""
@@ -319,3 +326,6 @@ def psap(participant_name, opponent_image_name_list):
 
             pygame.display.update()
             continue
+
+psap(pname, opp_image_list)
+#print(pname, opp_image_list)

@@ -1,8 +1,8 @@
 """GAMEPLAY PARAMETERS"""
 # parameters: Time
-block_phase_duration = 75
-practice_phase_duration = 15
-safe_period_default = 7.5
+block_phase_duration = 300
+practice_phase_duration = 60
+safe_period_default = 30
 num_phases = 3
 # parameters: Participant
 option1_presses = 100
@@ -42,15 +42,15 @@ practice_opponent_points_print = True
 practice_opponent_points = 30
 # parameters: transition screen
 transition_message_print = True
-transition_message = "Please await further instructions."
+transition_message = "Press n key to continue to the next round."
 transition_message_fontsize = 32
-transition_message_x = 175
+transition_message_x = 50
 transition_message_y = 275
 # parameters: end screen
 end_message_print = True
-end_message = "Thank you for your participation!"
+end_message = "Press Esc key to exit."
 end_message_fontsize = 32
-end_message_x = 190
+end_message_x = 100
 end_message_y = 290
 # parameters: AI opponent
 opponent_image_print = False
