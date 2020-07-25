@@ -13,7 +13,7 @@ def fix_images(dir_path):
 def whichSlash():
     if os.name == 'posix':
         return('/')
-    else:
+    elif os.name == 'nt':
         return('\\')
 
 def pickle2Dumps(picklePath):
