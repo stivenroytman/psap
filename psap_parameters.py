@@ -1,8 +1,8 @@
 """GAMEPLAY PARAMETERS"""
 # parameters: Time
-block_phase_duration = 300
-practice_phase_duration = 60
-safe_period_default = 30
+block_phase_duration = 10
+practice_phase_duration = 5
+safe_period_default = 2
 num_phases = 3
 # parameters: Participant
 option1_presses = 100

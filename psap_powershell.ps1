@@ -18,3 +18,4 @@ $opponent_images = Get-Folder("Please select folder with opponent images.")
 $participant_name =  [Microsoft.VisualBasic.Interaction]::InputBox("Please enter participant's name", "Participant name", "Participant")
 
 python .\psap_core.py $participant_name $opponent_images
+python .\pickle_to_dataframe.py

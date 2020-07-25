@@ -9,15 +9,24 @@ from player_class import Player
 from object_print_class import ObjectPrint
 from object_print_class import FlashingObject
 from psap_parameters import *
+from misc_functions import *
+from pandas import read_pickle, DataFrame, ExcelWriter
 # -------------------------------------------------------------------------------------------------
+
+slash = whichSlash()
+
+fix_images(sys.argv[2])
+
+# Processing user selected parameters.
+pname = sys.argv[1]
+#opp_image_list = os.listdir(sys.argv[2])
+opp_image_list = ['not 0 ;)'] + [sys.argv[2] + slash + image for image in os.listdir(sys.argv[2])]
+#opp_image_list = ['not 0 ;)'] + opp_image_list
+
+
 
 """Initialize pygame modules"""
 pygame.init()
-pname = sys.argv[1]
-opp_image_list = os.listdir(sys.argv[2])
-opp_image_list = [sys.argv[2] + '\\' + image for image in opp_image_list]
-opp_image_list = ['not 0 ;)'] + opp_image_list
-
 
 def psap(participant_name, opponent_image_name_list):
     """Initialize the game screen"""
@@ -173,12 +182,20 @@ def psap(participant_name, opponent_image_name_list):
                                 safe_period = safe_period_default
 
                 if event.key == pygame.K_ESCAPE:
-                    data_file_name = participant_name + "_"  + \
-                        str(datetime.datetime.now())\
+                    data_file_name = 'Data' + slash + 'pickle' + slash + \
+                        participant_name + "_"  + \
+                        str(datetime.datetime.now()) \
                         .replace(" ", "_").replace(":", "_").replace(".", "_").replace("-", "_") + ".pickle"
                     data_file = open(data_file_name, 'ab')
                     pickle.dump(data, data_file)
                     data_file.close()
+                    dumpDict = pickle2Dumps(data_file_name)  
+                    writer = ExcelWriter(data_file_name.replace('.pickle', '.xlsx').replace('pickle', 'excel'), \
+                        engine='xlsxwriter')
+                    for trial in dumpDict:
+                        trialDumps = DataFrame(dumpDict[trial])
+                        trialDumps.to_excel(writer, sheet_name=str('dumps_trial_' + trial))
+                    writer.save()
                     pygame.display.quit()
                     running = False
 
@@ -235,7 +252,9 @@ def psap(participant_name, opponent_image_name_list):
         # ----------------------------------------------------------------------------------------------------------------------
         if phase % 2 == 0:  # PHASE: transitionnn
             if phase > 2:
-                data[str((int(phase / 2) - 1))]['player_points'] = participant.points
+                if participant.points > 0:
+                    data[str((int(phase / 2) - 1))]['player_points'] = participant.points
+                else: data[str((int(phase / 2) - 1))]['player_points'] = 0
                 data[str((int(phase / 2) - 1))]['total_presses'] = participant.counters_data_output
                 data[str((int(phase / 2) - 1))]['player_provoked'] = participant.provoked_total
                 data[str((int(phase / 2) - 1))]['dumps'] = participant.dumps
@@ -328,4 +347,4 @@ def psap(participant_name, opponent_image_name_list):
             continue
 
 psap(pname, opp_image_list)
-#print(pname, opp_image_list)
+
