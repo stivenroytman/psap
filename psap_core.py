@@ -13,14 +13,12 @@ from misc_functions import *
 from pandas import read_pickle, DataFrame, ExcelWriter
 # -------------------------------------------------------------------------------------------------
 
-slash = whichSlash()
-
 fix_images(sys.argv[2])
 
 # Processing user selected parameters.
 pname = sys.argv[1]
 #opp_image_list = os.listdir(sys.argv[2])
-opp_image_list = ['not 0 ;)'] + [sys.argv[2] + slash + image for image in os.listdir(sys.argv[2])]
+opp_image_list = ['not 0 ;)'] + [os.path.join(sys.argv[2], image) for image in os.listdir(sys.argv[2])]
 #opp_image_list = ['not 0 ;)'] + opp_image_list
 
 
@@ -159,9 +157,6 @@ def psap(participant_name, opponent_image_name_list):
             if event.type == pygame.KEYDOWN:
 
                 if phase % 2 == 0:
-                    # TODO: write dictionary data to dataframe here or in phase section
-                    # changed: deleted player and AI resets, moved them to press n below
-                    # changed: deleted graphical functions below to check if they are necessary
                     if event.key == pygame.K_n:
                         if phase < 8:
                             participant = Player()
@@ -182,16 +177,14 @@ def psap(participant_name, opponent_image_name_list):
                                 safe_period = safe_period_default
 
                 if event.key == pygame.K_ESCAPE:
-                    data_file_name = 'Data' + slash + 'pickle' + slash + \
-                        participant_name + "_"  + \
-                        str(datetime.datetime.now()) \
-                        .replace(" ", "_").replace(":", "_").replace(".", "_").replace("-", "_") + ".pickle"
+                    data_file_name = os.path.join('Data', 'pickle', participant_name + "_" + \
+                    str(datetime.datetime.now()).replace(" ", "_").replace(":", "_").replace(".", "_").replace("-", "_") + ".pickle")
                     data_file = open(data_file_name, 'ab')
                     pickle.dump(data, data_file)
                     data_file.close()
                     dumpDict = pickle2Dumps(data_file_name)  
-                    writer = ExcelWriter(data_file_name.replace('.pickle', '.xlsx').replace('pickle', 'excel'), \
-                        engine='xlsxwriter')
+                    writer = ExcelWriter(data_file_name.replace('.pickle', '.xlsx').replace('pickle', 'excel')\
+                        .replace(participant_name, 'Dumps_' + participant_name), engine='xlsxwriter')
                     for trial in dumpDict:
                         trialDumps = DataFrame(dumpDict[trial])
                         trialDumps.to_excel(writer, sheet_name=str('dumps_trial_' + trial))

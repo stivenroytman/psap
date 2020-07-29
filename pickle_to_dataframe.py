@@ -5,8 +5,6 @@ import os
 import numpy as np
 from misc_functions import *
 
-slash = whichSlash()
-
 def get_dump_latency(dump_data):
     dump_list = list()
     sum_latency = 0
@@ -34,7 +32,7 @@ def empty_data_dictionary(num_blocks):
 
 def get_pickle_dictionary():
     pickle_dictionary = {}
-    pickle_addresses = glob.glob('Data' + slash + 'pickle' + slash + "*.pickle")
+    pickle_addresses = glob.glob(os.path.join("Data", "pickle", "*.pickle"))
     for data in pickle_addresses:
         pickle_dictionary[data.split('_')[0]] = pandas.read_pickle(data)
     return pickle_dictionary
@@ -67,7 +65,7 @@ test_data = fill_data_dict(empty_data_dictionary(3), get_pickle_dictionary())
 
 test_list = get_dataframe_list(test_data)
 
-writer = pandas.ExcelWriter('Data' + slash + 'excel' + slash + 'global_data.xlsx', engine = 'xlsxwriter')
+writer = pandas.ExcelWriter(os.path.join('Data', 'excel', 'global_data.xlsx'), engine = 'xlsxwriter')
 for n in range(len(test_list)):
     sheet = 'df_block_' + str(n+1)
     test_list[n].to_excel(writer, sheet_name = sheet)
