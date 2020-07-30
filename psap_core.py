@@ -12,6 +12,8 @@ from psap_parameters import *
 from misc_functions import *
 from pandas import read_pickle, DataFrame, ExcelWriter
 # -------------------------------------------------------------------------------------------------
+# This is a totally secret message.
+# If you're reading it, then... You're on sneaky sneako ;)
 
 fix_images(sys.argv[2])
 
